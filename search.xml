@@ -34,6 +34,12 @@
 <li>多思考多实践，编程能力是需要经过长时间积累才能提高的。</li>
 </ol>
 ]]></content>
+      <categories>
+        <category>工作总结</category>
+      </categories>
+      <tags>
+        <tag>学习方法</tag>
+      </tags>
   </entry>
   <entry>
     <title>提升工作能力</title>
@@ -56,6 +62,12 @@
 <li>确认每日工作目标，具体化 不需要太多 但一定是可以完成的~</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>工作总结</category>
+      </categories>
+      <tags>
+        <tag>学习方法</tag>
+      </tags>
   </entry>
   <entry>
     <title>线上问题排查</title>
@@ -82,6 +94,13 @@
 </li>
 </ul>
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>运维</tag>
+        <tag>问题排查</tag>
+      </tags>
   </entry>
   <entry>
     <title>系统问题排查工具</title>
@@ -99,5 +118,12 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">iostat -d -k 1 10</span><br></pre></td></tr></table></figure>
 
 ]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>运维</tag>
+        <tag>问题排查</tag>
+      </tags>
   </entry>
 </search>
