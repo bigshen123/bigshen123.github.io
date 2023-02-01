@@ -13,7 +13,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>线上问题排查 |  bigshen blog</title>
+      <title>categories |  bigshen blog</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -55,182 +55,7 @@
       
     <main class="content on">
       <section class="outer">
-  <article
-  id="post-Operation/check"
-  class="article article-type-post"
-  itemscope
-  itemprop="blogPost"
-  data-scroll-reveal
->
-  <div class="article-inner">
-    
-    <header class="article-header">
-       
-<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  线上问题排查
-</h1>
- 
-
-      
-    </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/01/Operation/check/" class="article-date">
-  <time datetime="2023-02-01T04:40:51.546Z" itemprop="datePublished">2023-02-01</time>
-</a>   
-<div class="word_count">
-    <span class="post-time">
-        <span class="post-meta-item-icon">
-            <i class="ri-quill-pen-line"></i>
-            <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">632</span>
-        </span>
-    </span>
-
-    <span class="post-time">
-        &nbsp; | &nbsp;
-        <span class="post-meta-item-icon">
-            <i class="ri-book-open-line"></i>
-            <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
-        </span>
-    </span>
-</div>
- 
-    </div>
-      
-    <div class="tocbot"></div>
-
-
-
-
   
-    <div class="article-entry" itemprop="articleBody">
-       
-  <h2 id="线上cpu飙高时问题排查命令？"><a href="#线上cpu飙高时问题排查命令？" class="headerlink" title="线上cpu飙高时问题排查命令？"></a>线上cpu飙高时问题排查命令？</h2><ul>
-<li>查看所有进程cpu使用：使用top命令 查看cpu使用情况</li>
-<li>定位线程：比如PID&#x3D;1893 命令：top-Hp 1893</li>
-<li>定位代码：比如ID&#x3D;4519的线程cpu飙升则 需要把4519这个线程转成16进制，命令：printf %x 4519</li>
-<li>接下来 通过jstack命令，查看栈信息，命令sudo -u admin jstack 1893 |grep -A 200 11a7。</li>
-</ul>
-<p>另外，线上问题排查还可以使用Alibaba开源的工具Arthas进行排查，以上问题，可以使用一下命令定位：<br>thread -n 3 &#x2F;&#x2F;查看cpu占比前三的线程</p>
-<h2 id="线上Out-of-Memory-Error如何定位问题？"><a href="#线上Out-of-Memory-Error如何定位问题？" class="headerlink" title="线上Out of Memory Error如何定位问题？"></a>线上Out of Memory Error如何定位问题？</h2><p>使用工具查看内存使用情况，如 top、htop、vmstat、free 等。这些工具可以帮助您查看内存使用情况，并确定高内存使用的进程。<br>free -h</p>
-<h2 id="查看内存占用最高的进程"><a href="#查看内存占用最高的进程" class="headerlink" title="查看内存占用最高的进程"></a>查看内存占用最高的进程</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux --sort -rss</span><br></pre></td></tr></table></figure>
-
-<p>使用 “gcore <pid>“ 对占用内存最多的进程进行转储。<br>使用 “valgrind –tool&#x3D;memcheck –leak-check&#x3D;full <program>“ 检查程序中的内存泄露。</p>
-<ul>
-<li><p>如果你想要更细粒度的监控内存, 你可以使用 valgrind 和massif工具来检测内存泄漏。<br>使用工具查看堆栈信息，如 jmap、jstack 等。这些工具可以帮助您查看线程堆栈信息，并确定高内存使用的代码。<br>使用 “jmap -heap <pid>“ 查看 Java 进程的堆内存使用情况。<br>使用 “jmap -histo <pid>“ 查看 Java 进程中对象的内存使用情况。<br>使用 “jstack <pid>“ 查看 Java 进程的堆栈跟踪信息。<br>使用 “jstack -F <pid>“ 强制导出 Java 进程的堆栈跟踪信息。<br>使用 “jstack -m <pid>“ 查看 Java 进程中的多线程堆栈跟踪信息。</p>
-</li>
-<li><p>分析 GC 日志，查看垃圾收集器的工作情况。如果 GC 次数过多或停顿时间过长，可能是内存泄露的原因。<br>使用 “-verbose:gc” 选项启用 GC 日志记录。<br>使用 “-XX:+PrintGCDetails” 选项记录 GC 的详细信息。<br>使用 “-Xloggc:<file>“ 选项将 GC 日志写入指定文件。<br>使用工具如 GCViewer、VisualVM 等来可视化 GC 日志。<br>通过观察 GC 日志中的每次 GC 操作的耗时、垃圾收集类型、回收的内存大小等信息来分析 GC 情况。</p>
-</li>
-<li><p>检查代码中是否有内存泄露的现象，如有大量的对象创建或长时间不释放的对象。</p>
-</li>
-<li><p>检查代码是否有内存消耗过大的操作，如频繁创建大量对象或使用大量缓存。</p>
-</li>
-</ul>
- 
-      <!-- reward -->
-      
-      <div id="reword-out">
-        <div id="reward-btn">
-          打赏
-        </div>
-      </div>
-      
-    </div>
-    
-
-    <!-- copyright -->
-    
-    <div class="declare">
-      <ul class="post-copyright">
-        <li>
-          <i class="ri-copyright-line"></i>
-          <strong>版权声明： </strong>
-          
-          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
-          
-        </li>
-      </ul>
-    </div>
-    
-    <footer class="article-footer">
-       
-<div class="share-btn">
-      <span class="share-sns share-outer">
-        <i class="ri-share-forward-line"></i>
-        分享
-      </span>
-      <div class="share-wrap">
-        <i class="arrow"></i>
-        <div class="share-icons">
-          
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="ri-weibo-fill"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="ri-wechat-fill"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="ri-qq-fill"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="ri-douban-line"></i>
-          </a>
-          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a> -->
-          
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="ri-facebook-circle-fill"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="ri-twitter-fill"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="ri-google-fill"></i>
-          </a>
-        </div>
-      </div>
-</div>
-
-<div class="wx-share-modal">
-    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://bigshen123.github.io/2023/02/01/Operation/check/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div id="share-mask"></div>  
-    </footer>
-  </div>
-
-   
-  <nav class="article-nav">
-    
-    
-      <a href="/2023/02/01/Operation/tool/" class="article-nav-link">
-        <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">系统问题排查工具</div>
-      </a>
-    
-  </nav>
-
-  
-   
-  
-   
-    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
-    <div id="twikoo" class="twikoo"></div>
-    <script>
-        twikoo.init({
-            envId: ""
-        })
-    </script>
- 
-</article>
-
 </section>
       <footer class="footer">
   <div class="outer">
@@ -367,22 +192,6 @@
 <script src="/js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
- 
-<script src="/js/tocbot.min.js"></script>
-
-<script>
-  tocbot.init({
-    tocSelector: ".tocbot",
-    contentSelector: ".article-entry",
-    headingSelector: "h1, h2, h3, h4, h5, h6",
-    hasInnerContainers: true,
-    scrollSmooth: true,
-    scrollContainer: "main",
-    positionFixedSelector: ".tocbot",
-    positionFixedClass: "is-position-fixed",
-    fixedSidebarOffset: "auto",
-  });
-</script>
 
 <script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
 <link
