@@ -13,7 +13,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>线上问题排查 |  bigshen blog</title>
+      <title>提升工作能力 |  bigshen blog</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -67,7 +67,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  线上问题排查
+  提升工作能力
 </h1>
  
 
@@ -76,26 +76,22 @@
        
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="线上cpu飙高时问题排查命令？"><a href="#线上cpu飙高时问题排查命令？" class="headerlink" title="线上cpu飙高时问题排查命令？"></a>线上cpu飙高时问题排查命令？</h2><ul>
-<li>查看所有进程cpu使用：使用top命令 查看cpu使用情况</li>
-<li>定位线程：比如PID&#x3D;1893 命令：top-Hp 1893</li>
-<li>定位代码：比如ID&#x3D;4519的线程cpu飙升则 需要把4519这个线程转成16进制，命令：printf %x 4519</li>
-<li>接下来 通过jstack命令，查看栈信息，命令sudo -u admin jstack 1893 |grep -A 200 11a7。</li>
-</ul>
-<p>另外，线上问题排查还可以使用Alibaba开源的工具Arthas进行排查，以上问题，可以使用一下命令定位：<br>thread -n 3 &#x2F;&#x2F;查看cpu占比前三的线程</p>
-<h2 id="线上Out-of-Memory-Error如何定位问题？"><a href="#线上Out-of-Memory-Error如何定位问题？" class="headerlink" title="线上Out of Memory Error如何定位问题？"></a>线上Out of Memory Error如何定位问题？</h2><p>使用工具查看内存使用情况，如 top、htop、vmstat、free 等。这些工具可以帮助您查看内存使用情况，并确定高内存使用的进程。<br>free -h</p>
-<h2 id="查看内存占用最高的进程"><a href="#查看内存占用最高的进程" class="headerlink" title="查看内存占用最高的进程"></a>查看内存占用最高的进程</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux --sort -rss</span><br></pre></td></tr></table></figure>
-
-<p>使用 “gcore <pid>“ 对占用内存最多的进程进行转储。<br>使用 “valgrind –tool&#x3D;memcheck –leak-check&#x3D;full <program>“ 检查程序中的内存泄露。</p>
-<ul>
-<li><p>如果你想要更细粒度的监控内存, 你可以使用 valgrind 和massif工具来检测内存泄漏。<br>使用工具查看堆栈信息，如 jmap、jstack 等。这些工具可以帮助您查看线程堆栈信息，并确定高内存使用的代码。<br>使用 “jmap -heap <pid>“ 查看 Java 进程的堆内存使用情况。<br>使用 “jmap -histo <pid>“ 查看 Java 进程中对象的内存使用情况。<br>使用 “jstack <pid>“ 查看 Java 进程的堆栈跟踪信息。<br>使用 “jstack -F <pid>“ 强制导出 Java 进程的堆栈跟踪信息。<br>使用 “jstack -m <pid>“ 查看 Java 进程中的多线程堆栈跟踪信息。</p>
-</li>
-<li><p>分析 GC 日志，查看垃圾收集器的工作情况。如果 GC 次数过多或停顿时间过长，可能是内存泄露的原因。<br>使用 “-verbose:gc” 选项启用 GC 日志记录。<br>使用 “-XX:+PrintGCDetails” 选项记录 GC 的详细信息。<br>使用 “-Xloggc:<file>“ 选项将 GC 日志写入指定文件。<br>使用工具如 GCViewer、VisualVM 等来可视化 GC 日志。<br>通过观察 GC 日志中的每次 GC 操作的耗时、垃圾收集类型、回收的内存大小等信息来分析 GC 情况。</p>
-</li>
-<li><p>检查代码中是否有内存泄露的现象，如有大量的对象创建或长时间不释放的对象。</p>
-</li>
-<li><p>检查代码是否有内存消耗过大的操作，如频繁创建大量对象或使用大量缓存。</p>
-</li>
+  <ul>
+<li>凡事有交代，件件有着落，事事有回音</li>
+<li>遇到问题及时反馈，出方案时让领导选择。不同选项列出利弊，且表明自己的倾向性</li>
+<li>考虑问题细致，尽量没有遗漏</li>
+<li>行动力强，不要让人催着做事情</li>
+<li>遇事第一反应是解决，而不是推卸责任</li>
+<li>高智商情商 说话让人舒服，做事让人放心</li>
+<li>被指出不足时，先反思，而不是本能的反驳和解释。有则改之，无则加勉。不认可的可以私下沟通</li>
+<li>逆境时不能消沉，能一起扛事</li>
+<li>沟通能力强，有效率</li>
+<li>和领导保持高度一致</li>
+<li>勤奋的品质</li>
+<li>可以自己找活干</li>
+<li>对工作成果精益求精（不要怕麻烦）</li>
+<li>做好自己的个人形象管理</li>
+<li>确认每日工作目标，具体化 不需要太多 但一定是可以完成的~</li>
 </ul>
  
       <!-- reward -->
@@ -167,7 +163,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://bigshen123.github.io/categories/Operation/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5.html" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://bigshen123.github.io/categories/Learn/up.html" alt="微信分享二维码">
     </div>
 </div>
 
