@@ -13,7 +13,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>线上问题排查 |  bigshen blog</title>
+      <title>系统问题排查工具 |  bigshen blog</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -43,7 +43,8 @@
           font-size: 1.6rem;
         }
       </style>
-    </head>
+    <link rel="alternate" href="/atom.xml" title="bigshen blog" type="application/atom+xml">
+</head>
   </html>
 </html>
 
@@ -55,8 +56,8 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-系统运维/线上问题排查"
-  class="article article-type-post"
+  id="page-"
+  class="article article-type-page"
   itemscope
   itemprop="blogPost"
   data-scroll-reveal
@@ -66,67 +67,27 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  线上问题排查
+  系统问题排查工具
 </h1>
  
 
       
     </header>
-     
-    <div class="article-meta">
-      <a href="/2023/02/01/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="article-date">
-  <time datetime="2023-02-01T04:40:51.546Z" itemprop="datePublished">2023-02-01</time>
-</a>   
-<div class="word_count">
-    <span class="post-time">
-        <span class="post-meta-item-icon">
-            <i class="ri-quill-pen-line"></i>
-            <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">632</span>
-        </span>
-    </span>
-
-    <span class="post-time">
-        &nbsp; | &nbsp;
-        <span class="post-meta-item-icon">
-            <i class="ri-book-open-line"></i>
-            <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
-        </span>
-    </span>
-</div>
- 
-    </div>
-      
-    <div class="tocbot"></div>
-
-
-
-
-  
+       
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="线上cpu飙高时问题排查命令？"><a href="#线上cpu飙高时问题排查命令？" class="headerlink" title="线上cpu飙高时问题排查命令？"></a>线上cpu飙高时问题排查命令？</h2><ul>
-<li>查看所有进程cpu使用：使用top命令 查看cpu使用情况</li>
-<li>定位线程：比如PID&#x3D;1893 命令：top-Hp 1893</li>
-<li>定位代码：比如ID&#x3D;4519的线程cpu飙升则 需要把4519这个线程转成16进制，命令：printf %x 4519</li>
-<li>接下来 通过jstack命令，查看栈信息，命令sudo -u admin jstack 1893 |grep -A 200 11a7。</li>
-</ul>
-<p>另外，线上问题排查还可以使用Alibaba开源的工具Arthas进行排查，以上问题，可以使用一下命令定位：<br>thread -n 3 &#x2F;&#x2F;查看cpu占比前三的线程</p>
-<h2 id="线上Out-of-Memory-Error如何定位问题？"><a href="#线上Out-of-Memory-Error如何定位问题？" class="headerlink" title="线上Out of Memory Error如何定位问题？"></a>线上Out of Memory Error如何定位问题？</h2><p>使用工具查看内存使用情况，如 top、htop、vmstat、free 等。这些工具可以帮助您查看内存使用情况，并确定高内存使用的进程。<br>free -h</p>
-<h2 id="查看内存占用最高的进程"><a href="#查看内存占用最高的进程" class="headerlink" title="查看内存占用最高的进程"></a>查看内存占用最高的进程</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ps aux --sort -rss<br></code></pre></td></tr></table></figure>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">smartmontools</span><br><span class="line">lm_sensors</span><br><span class="line">iotop</span><br><span class="line">sysstat</span><br><span class="line">nc</span><br><span class="line">nmap</span><br><span class="line">lrzsz</span><br><span class="line">strace</span><br><span class="line">vim</span><br></pre></td></tr></table></figure>
 
-<p>使用 “gcore <pid>“ 对占用内存最多的进程进行转储。<br>使用 “valgrind –tool&#x3D;memcheck –leak-check&#x3D;full <program>“ 检查程序中的内存泄露。</p>
-<ul>
-<li><p>如果你想要更细粒度的监控内存, 你可以使用 valgrind 和massif工具来检测内存泄漏。<br>使用工具查看堆栈信息，如 jmap、jstack 等。这些工具可以帮助您查看线程堆栈信息，并确定高内存使用的代码。<br>使用 “jmap -heap <pid>“ 查看 Java 进程的堆内存使用情况。<br>使用 “jmap -histo <pid>“ 查看 Java 进程中对象的内存使用情况。<br>使用 “jstack <pid>“ 查看 Java 进程的堆栈跟踪信息。<br>使用 “jstack -F <pid>“ 强制导出 Java 进程的堆栈跟踪信息。<br>使用 “jstack -m <pid>“ 查看 Java 进程中的多线程堆栈跟踪信息。</p>
-</li>
-<li><p>分析 GC 日志，查看垃圾收集器的工作情况。如果 GC 次数过多或停顿时间过长，可能是内存泄露的原因。<br>使用 “-verbose:gc” 选项启用 GC 日志记录。<br>使用 “-XX:+PrintGCDetails” 选项记录 GC 的详细信息。<br>使用 “-Xloggc:<file>“ 选项将 GC 日志写入指定文件。<br>使用工具如 GCViewer、VisualVM 等来可视化 GC 日志。<br>通过观察 GC 日志中的每次 GC 操作的耗时、垃圾收集类型、回收的内存大小等信息来分析 GC 情况。</p>
-</li>
-<li><p>检查代码中是否有内存泄露的现象，如有大量的对象创建或长时间不释放的对象。</p>
-</li>
-<li><p>检查代码是否有内存消耗过大的操作，如频繁创建大量对象或使用大量缓存。</p>
-</li>
-</ul>
+<p>排查iowait问题</p>
+<p>iotop<br>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/chj_1224365967/article/details/108142938">https://blog.csdn.net/chj_1224365967/article/details/108142938</a><br>iotop (选项)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-o：只显示有io操作的进程</span><br><span class="line">-b：批量显示，无交互，主要用作记录到文件。</span><br><span class="line">-n NUM：显示NUM次，主要用于非交互式模式。</span><br><span class="line">-d SEC：间隔SEC秒显示一次。</span><br><span class="line">-p PID：监控的进程pid。</span><br><span class="line">-u USER：监控的进程用户。</span><br></pre></td></tr></table></figure>
+
+<p>iostats<br>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/huxinglixing/article/details/116306731">https://blog.csdn.net/huxinglixing/article/details/116306731</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">参数    详解</span><br><span class="line"></span><br><span class="line">-c    只显示cpu相关统计信息（默认是同时显示cpu和磁盘信息）</span><br><span class="line"></span><br><span class="line">-d    只显示磁盘统计信息（默认是同时显示cpu和磁盘信息）</span><br><span class="line"></span><br><span class="line">-h    使用NFS的输出报告更加友好可读。</span><br><span class="line"></span><br><span class="line">-j &#123; ID | LABEL | PATH | UUID | … &#125;    磁盘列表的Device列要用什么维度来描述磁盘</span><br><span class="line"></span><br><span class="line">-k    默认情况下，iostat的输出是以block作为计量单位，加上这个参数可以以kb作为计量单位显示。（该参数仅在linux内核版本2.4以后数据才是准确的）</span><br><span class="line"></span><br><span class="line">-m    默认情况下，iostat的输出是以block作为计量单位，加上这个参数可以以mb作为计量单位显示。（该参数仅在linux内核版本2.4以后数据才是准确的）</span><br><span class="line"></span><br><span class="line">-N    显示磁盘阵列(LVM) 信息</span><br><span class="line"></span><br><span class="line">-n    显示NFS相关统计数据（network fileSystem）。（该参数只在linux内核版本2.6.17之后有用）</span><br><span class="line"></span><br><span class="line">-p [ &#123; device [,…] | ALL &#125; ]    显示磁盘分区的相关统计信息（默认粒度只到磁盘，没有显示具体的逻辑分区）</span><br><span class="line"></span><br><span class="line">-t    显示终端和CPU的信息，每次输出报告时显示系统时间。</span><br><span class="line"></span><br><span class="line">-V    显示当前iostat的版本信息</span><br><span class="line"></span><br><span class="line">-x    显示更详细的磁盘报告信息，默认只显示六列，加上该参数后会显示更详细的信息。（该参数需要在内核版本2.4之后才能使用）</span><br><span class="line"></span><br><span class="line">-y    跳过不显示第一次报告的数据，因为iostat使用的是采样统计，所以iostat的第一次输出的数据是自系统启动以来累计的数据</span><br><span class="line"></span><br><span class="line">-z    只显示在采样周期内有活动的磁盘</span><br></pre></td></tr></table></figure>
+
+<p>每1s刷新一次，共刷新10次，-K表示单位为kb，-d表示只统计磁盘信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iostat -d -k 1 10</span><br></pre></td></tr></table></figure>
+
  
       <!-- reward -->
       
@@ -197,7 +158,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://bigshen123.github.io/2023/02/01/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://bigshen123.github.io/categories/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4/%E7%B3%BB%E7%BB%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7.html" alt="微信分享二维码">
     </div>
 </div>
 
@@ -206,28 +167,9 @@
   </div>
 
    
-  <nav class="article-nav">
-    
-    
-      <a href="/2023/02/01/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4/%E7%B3%BB%E7%BB%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7/" class="article-nav-link">
-        <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">系统问题排查工具</div>
-      </a>
-    
-  </nav>
-
   
    
   
-   
-    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
-    <div id="twikoo" class="twikoo"></div>
-    <script>
-        twikoo.init({
-            envId: ""
-        })
-    </script>
- 
 </article>
 
 </section>
@@ -315,15 +257,11 @@
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" target="_blank" rel="noopener" href="http://shenyu-vip.lofter.com">摄影</a>
-    </li>
-    
-    <li class="nav-item">
       <a class="nav-item-link" href="/friends">友链</a>
     </li>
     
     <li class="nav-item">
-      <a class="nav-item-link" href="/2019/about">关于我</a>
+      <a class="nav-item-link" href="/about">关于我</a>
     </li>
     
   </ul>
@@ -378,22 +316,6 @@
 <script src="/js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
- 
-<script src="/js/tocbot.min.js"></script>
-
-<script>
-  tocbot.init({
-    tocSelector: ".tocbot",
-    contentSelector: ".article-entry",
-    headingSelector: "h1, h2, h3, h4, h5, h6",
-    hasInnerContainers: true,
-    scrollSmooth: true,
-    scrollContainer: "main",
-    positionFixedSelector: ".tocbot",
-    positionFixedClass: "is-position-fixed",
-    fixedSidebarOffset: "auto",
-  });
-</script>
 
 <script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
 <link
