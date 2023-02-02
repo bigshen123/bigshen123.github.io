@@ -13,7 +13,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>标签 |  bigshen blog</title>
+      <title>JVM参数、命令 |  bigshen blog</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -55,13 +55,112 @@
       
     <main class="content on">
       <section class="outer">
+  <article
+  id="post-Java/系统问题排查工具"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  JVM参数、命令
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/02/01/Java/%E7%B3%BB%E7%BB%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%B7%A5%E5%85%B7/" class="article-date">
+  <time datetime="2023-02-01T08:21:13.573Z" itemprop="datePublished">2023-02-01</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
+  </div>
   
-    <h1 class="page-type-title">标签</h1>
-    <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" rel="tag">学习方法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="tag">问题排查</a></li></ul>
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">1.2k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">4 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
   
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="JVM参数"><a href="#JVM参数" class="headerlink" title="JVM参数"></a>JVM参数</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">-Xmixed        混合模式执行 (默认)</span><br><span class="line">-Xint             仅解释模式执行</span><br><span class="line">-Xcomp        仅采用即时编译器模式</span><br><span class="line">-Xbootclasspath:&lt;用 ; 分隔的目录和 zip/jar 文件&gt;  设置搜索路径以引导类和资源</span><br><span class="line">-Xbootclasspath/a:&lt;用 ; 分隔的目录和 zip/jar 文件&gt; 附加在引导类路径末尾</span><br><span class="line">-Xbootclasspath/p:&lt;用 ; 分隔的目录和 zip/jar 文件&gt; 置于引导类路径之前</span><br><span class="line">-Xdiag            显示附加诊断消息</span><br><span class="line">-Xnoclassgc       禁用类垃圾收集</span><br><span class="line">-Xincgc           启用增量垃圾收集</span><br><span class="line">-Xloggc:&lt;file&gt;    将 GC 状态记录在文件中 (带时间戳)</span><br><span class="line">-Xbatch           禁用后台编译</span><br><span class="line">-Xms&lt;size&gt;        设置初始 Java 堆大小</span><br><span class="line">-Xmx&lt;size&gt;        设置最大 Java 堆大小</span><br><span class="line">-Xss&lt;size&gt;        设置 Java 线程堆栈大小</span><br><span class="line">-Xprof            输出 cpu 配置文件数据</span><br><span class="line">-Xfuture          启用最严格的检查, 预期将来的默认值</span><br><span class="line">-Xrs              减少 Java/VM 对操作系统信号的使用 (请参阅文档)</span><br><span class="line">-Xcheck:jni       对 JNI 函数执行其他检查</span><br><span class="line">-Xshare:off       不尝试使用共享类数据</span><br><span class="line">-Xshare:auto      在可能的情况下使用共享类数据 (默认)</span><br><span class="line">-Xshare:on        要求使用共享类数据, 否则将失败。</span><br><span class="line">-XshowSettings    显示所有设置并继续</span><br><span class="line">-XshowSettings:all 显示所有设置并继续</span><br><span class="line">-XshowSettings:vm 显示所有与 vm 相关的设置并继续</span><br><span class="line">-XshowSettings:properties 显示所有属性设置并继续</span><br><span class="line">-XshowSettings:locale 显示所有与区域设置相关的设置并继续</span><br><span class="line">-X 选项是非标准选项，如有更改，恕不另行通知</span><br></pre></td></tr></table></figure>
+
+<h2 id="jps-查看正在运行的Java进程"><a href="#jps-查看正在运行的Java进程" class="headerlink" title="jps 查看正在运行的Java进程"></a>jps 查看正在运行的Java进程</h2><h2 id="jstat-查看JVM统计信息"><a href="#jstat-查看JVM统计信息" class="headerlink" title="jstat 查看JVM统计信息"></a>jstat 查看JVM统计信息</h2><p>1、-class举例：<br>jstat -class -t -h3 13152 1000 10，<br>其中h3中的3代表每隔3个分隔一次，13152代表类的进程id，1000代表每隔1000毫秒打印一次，10代表一共打印10次，如下所示：</p>
+<p>其中Timestamp代表程序至今的运行时间，单位为秒；Loaded代表加载的类的数目；Bytes代表加载的类的总字节数；Unloaded代表卸载的类的数目；Bytes代表卸载的类的总字节数；Time代表类装载所消耗的时间；<br>2、-gc举例：jstat -gc 13152，其中13152代表类的进程id，执行结果如下所示：</p>
+<p>其中S0C代表幸存者0区的总容量，S1C代表幸存者1区的总容量，S0U代表幸存者0区使用的容量，S1U代表幸存者1区使用的容量，EC代表伊甸园区的总容量，EU代表伊甸园区使用的总容量，OC代表老年代的总容量，OU代表老年代已经使用的容量，MC代表方法区的总容量，MU代表方法区的总容量，CCSC代表压缩类的总容量，CCSU代表压缩类使用的容量，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间<br>3、-gccapacity举例：jstat -gccapacity 13152，其中13152代表类的进程id，执行结果如下：</p>
+<p>其中S0C代表幸存者0区的容量，S1C代表幸存者1区的容量，EC代表伊甸园区的容量，CCSC代表压缩类的容量，YGC代表年轻代垃圾回收的时间，FGC代表Full GC垃圾回收的时间<br>4、-gcutil举例：jstat -gcutil 13152，其中13152代表类的进程id，执行结果如下所示：</p>
+<p>以上是各区域占比以及垃圾回收的情况，S0代表幸存者0区，S1代表幸存者1区，E代表伊甸园区，O代表老年代，M代表方法区，CCS代表压缩类，以上这些值都是占比情况，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间<br>5、-gccause举例：jstat -gccause 13152，其中13152代表类的进程id，执行结果如下：</p>
+<p>以上是各区域占比以及垃圾回收的情况，还有触发垃圾回收的原因解释，S0代表幸存者0区，S1代表幸存者1区，E代表伊甸园区，O代表老年代，M代表方法区，CCS代表压缩类，以上这些值都是占比情况，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间，LGCC和GCC代表垃圾回收的原因</p>
+<h2 id="jinfo-实时查看和修改JVM配置参数"><a href="#jinfo-实时查看和修改JVM配置参数" class="headerlink" title="jinfo 实时查看和修改JVM配置参数"></a>jinfo 实时查看和修改JVM配置参数</h2><p><img src="/img.png" alt="img.png"></p>
+<h2 id="jstatd-远程主机信息收集"><a href="#jstatd-远程主机信息收集" class="headerlink" title="jstatd 远程主机信息收集"></a>jstatd 远程主机信息收集</h2><h2 id="jcmd-多功能命令行"><a href="#jcmd-多功能命令行" class="headerlink" title="jcmd 多功能命令行"></a>jcmd 多功能命令行</h2><h2 id="jstack-打印JVM中线程快照"><a href="#jstack-打印JVM中线程快照" class="headerlink" title="jstack 打印JVM中线程快照"></a>jstack 打印JVM中线程快照</h2><h2 id="jhat-JDK自带堆分析工具"><a href="#jhat-JDK自带堆分析工具" class="headerlink" title="jhat JDK自带堆分析工具"></a>jhat JDK自带堆分析工具</h2><h2 id="jmap-导出内存映像文件-amp-内存使用情况"><a href="#jmap-导出内存映像文件-amp-内存使用情况" class="headerlink" title="jmap 导出内存映像文件&amp;内存使用情况"></a>jmap 导出内存映像文件&amp;内存使用情况</h2> 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <footer class="article-footer">
+       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2023/02/01/Operation/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">线上问题排查</div>
+      </a>
+    
+  </nav>
+
+  
+   
+  
+   
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
 </section>
-
-
       <footer class="footer">
   <div class="outer">
     <ul>
@@ -197,6 +296,22 @@
 <script src="/js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
 
 <script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
 <link

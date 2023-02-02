@@ -75,10 +75,12 @@
     <content><![CDATA[<h2 id="线上cpu飙高时问题排查命令？"><a href="#线上cpu飙高时问题排查命令？" class="headerlink" title="线上cpu飙高时问题排查命令？"></a>线上cpu飙高时问题排查命令？</h2><ul>
 <li>查看所有进程cpu使用：使用top命令 查看cpu使用情况</li>
 <li>定位线程：比如PID&#x3D;1893 命令：top-Hp 1893</li>
-<li>定位代码：比如ID&#x3D;4519的线程cpu飙升则 需要把4519这个线程转成16进制，命令：printf %x 4519</li>
-<li>接下来 通过jstack命令，查看栈信息，命令sudo -u admin jstack 1893 |grep -A 200 11a7。</li>
+<li>定位代码：比如ID&#x3D;4519的线程cpu飙升则 需要把4519这个线程转成16进制，命令：printf %x 4519 得到nid</li>
+<li>接下来 在jstack中找到相应的堆栈信息jstack pid |grep ‘nid’ -C5 –color</li>
+<li>或者通过jstack命令，查看栈信息，命令sudo -u admin jstack 1893 |grep -A 200 11a7。</li>
 </ul>
 <p>另外，线上问题排查还可以使用Alibaba开源的工具Arthas进行排查，以上问题，可以使用一下命令定位：<br>thread -n 3 &#x2F;&#x2F;查看cpu占比前三的线程</p>
+<h2 id="频繁gc？"><a href="#频繁gc？" class="headerlink" title="频繁gc？"></a>频繁gc？</h2><p>也可以使用jstat来分析问题可以先确定下gc是不是太频繁，使用jstat -gc pid 1000命令来对gc分代变化情况进行观察，<br>1000表示采样间隔(ms)，S0C&#x2F;S1C、S0U&#x2F;S1U、EC&#x2F;EU、OC&#x2F;OU、MC&#x2F;MU分别代表两个Survivor区、Eden区、老年代、元数据区的容量和使用量。YGC&#x2F;YGT、FGC&#x2F;FGCT、GCT则代表YoungGc、FullGc的耗时和次数以及总耗时。如果看到gc比较频繁，再针对gc方面做进一步分析。<br><img src="/jstat.png" alt="jstat.png"></p>
 <h2 id="线上Out-of-Memory-Error如何定位问题？"><a href="#线上Out-of-Memory-Error如何定位问题？" class="headerlink" title="线上Out of Memory Error如何定位问题？"></a>线上Out of Memory Error如何定位问题？</h2><p>使用工具查看内存使用情况，如 top、htop、vmstat、free 等。这些工具可以帮助您查看内存使用情况，并确定高内存使用的进程。<br>free -h</p>
 <h2 id="查看内存占用最高的进程"><a href="#查看内存占用最高的进程" class="headerlink" title="查看内存占用最高的进程"></a>查看内存占用最高的进程</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ps aux --sort -rss</span><br></pre></td></tr></table></figure>
 
@@ -124,6 +126,26 @@
       <tags>
         <tag>运维</tag>
         <tag>问题排查</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JVM参数、命令</title>
+    <url>/2023/02/01/Java/%E7%B3%BB%E7%BB%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E5%B7%A5%E5%85%B7/</url>
+    <content><![CDATA[<h2 id="JVM参数"><a href="#JVM参数" class="headerlink" title="JVM参数"></a>JVM参数</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-Xmixed        混合模式执行 (默认)</span><br><span class="line">-Xint             仅解释模式执行</span><br><span class="line">-Xcomp        仅采用即时编译器模式</span><br><span class="line">-Xbootclasspath:&lt;用 ; 分隔的目录和 zip/jar 文件&gt;  设置搜索路径以引导类和资源</span><br><span class="line">-Xbootclasspath/a:&lt;用 ; 分隔的目录和 zip/jar 文件&gt; 附加在引导类路径末尾</span><br><span class="line">-Xbootclasspath/p:&lt;用 ; 分隔的目录和 zip/jar 文件&gt; 置于引导类路径之前</span><br><span class="line">-Xdiag            显示附加诊断消息</span><br><span class="line">-Xnoclassgc       禁用类垃圾收集</span><br><span class="line">-Xincgc           启用增量垃圾收集</span><br><span class="line">-Xloggc:&lt;file&gt;    将 GC 状态记录在文件中 (带时间戳)</span><br><span class="line">-Xbatch           禁用后台编译</span><br><span class="line">-Xms&lt;size&gt;        设置初始 Java 堆大小</span><br><span class="line">-Xmx&lt;size&gt;        设置最大 Java 堆大小</span><br><span class="line">-Xss&lt;size&gt;        设置 Java 线程堆栈大小</span><br><span class="line">-Xprof            输出 cpu 配置文件数据</span><br><span class="line">-Xfuture          启用最严格的检查, 预期将来的默认值</span><br><span class="line">-Xrs              减少 Java/VM 对操作系统信号的使用 (请参阅文档)</span><br><span class="line">-Xcheck:jni       对 JNI 函数执行其他检查</span><br><span class="line">-Xshare:off       不尝试使用共享类数据</span><br><span class="line">-Xshare:auto      在可能的情况下使用共享类数据 (默认)</span><br><span class="line">-Xshare:on        要求使用共享类数据, 否则将失败。</span><br><span class="line">-XshowSettings    显示所有设置并继续</span><br><span class="line">-XshowSettings:all 显示所有设置并继续</span><br><span class="line">-XshowSettings:vm 显示所有与 vm 相关的设置并继续</span><br><span class="line">-XshowSettings:properties 显示所有属性设置并继续</span><br><span class="line">-XshowSettings:locale 显示所有与区域设置相关的设置并继续</span><br><span class="line">-X 选项是非标准选项，如有更改，恕不另行通知</span><br></pre></td></tr></table></figure>
+
+<h2 id="jps-查看正在运行的Java进程"><a href="#jps-查看正在运行的Java进程" class="headerlink" title="jps 查看正在运行的Java进程"></a>jps 查看正在运行的Java进程</h2><h2 id="jstat-查看JVM统计信息"><a href="#jstat-查看JVM统计信息" class="headerlink" title="jstat 查看JVM统计信息"></a>jstat 查看JVM统计信息</h2><p>1、-class举例：<br>jstat -class -t -h3 13152 1000 10，<br>其中h3中的3代表每隔3个分隔一次，13152代表类的进程id，1000代表每隔1000毫秒打印一次，10代表一共打印10次，如下所示：</p>
+<p>其中Timestamp代表程序至今的运行时间，单位为秒；Loaded代表加载的类的数目；Bytes代表加载的类的总字节数；Unloaded代表卸载的类的数目；Bytes代表卸载的类的总字节数；Time代表类装载所消耗的时间；<br>2、-gc举例：jstat -gc 13152，其中13152代表类的进程id，执行结果如下所示：</p>
+<p>其中S0C代表幸存者0区的总容量，S1C代表幸存者1区的总容量，S0U代表幸存者0区使用的容量，S1U代表幸存者1区使用的容量，EC代表伊甸园区的总容量，EU代表伊甸园区使用的总容量，OC代表老年代的总容量，OU代表老年代已经使用的容量，MC代表方法区的总容量，MU代表方法区的总容量，CCSC代表压缩类的总容量，CCSU代表压缩类使用的容量，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间<br>3、-gccapacity举例：jstat -gccapacity 13152，其中13152代表类的进程id，执行结果如下：</p>
+<p>其中S0C代表幸存者0区的容量，S1C代表幸存者1区的容量，EC代表伊甸园区的容量，CCSC代表压缩类的容量，YGC代表年轻代垃圾回收的时间，FGC代表Full GC垃圾回收的时间<br>4、-gcutil举例：jstat -gcutil 13152，其中13152代表类的进程id，执行结果如下所示：</p>
+<p>以上是各区域占比以及垃圾回收的情况，S0代表幸存者0区，S1代表幸存者1区，E代表伊甸园区，O代表老年代，M代表方法区，CCS代表压缩类，以上这些值都是占比情况，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间<br>5、-gccause举例：jstat -gccause 13152，其中13152代表类的进程id，执行结果如下：</p>
+<p>以上是各区域占比以及垃圾回收的情况，还有触发垃圾回收的原因解释，S0代表幸存者0区，S1代表幸存者1区，E代表伊甸园区，O代表老年代，M代表方法区，CCS代表压缩类，以上这些值都是占比情况，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间，LGCC和GCC代表垃圾回收的原因</p>
+<h2 id="jinfo-实时查看和修改JVM配置参数"><a href="#jinfo-实时查看和修改JVM配置参数" class="headerlink" title="jinfo 实时查看和修改JVM配置参数"></a>jinfo 实时查看和修改JVM配置参数</h2><p><img src="/img.png" alt="img.png"></p>
+<h2 id="jstatd-远程主机信息收集"><a href="#jstatd-远程主机信息收集" class="headerlink" title="jstatd 远程主机信息收集"></a>jstatd 远程主机信息收集</h2><h2 id="jcmd-多功能命令行"><a href="#jcmd-多功能命令行" class="headerlink" title="jcmd 多功能命令行"></a>jcmd 多功能命令行</h2><h2 id="jstack-打印JVM中线程快照"><a href="#jstack-打印JVM中线程快照" class="headerlink" title="jstack 打印JVM中线程快照"></a>jstack 打印JVM中线程快照</h2><h2 id="jhat-JDK自带堆分析工具"><a href="#jhat-JDK自带堆分析工具" class="headerlink" title="jhat JDK自带堆分析工具"></a>jhat JDK自带堆分析工具</h2><h2 id="jmap-导出内存映像文件-amp-内存使用情况"><a href="#jmap-导出内存映像文件-amp-内存使用情况" class="headerlink" title="jmap 导出内存映像文件&amp;内存使用情况"></a>jmap 导出内存映像文件&amp;内存使用情况</h2>]]></content>
+      <categories>
+        <category>JAVA</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
       </tags>
   </entry>
 </search>
