@@ -119,8 +119,8 @@
 <li>或者通过jstack命令，查看栈信息，命令sudo -u admin jstack 1893 |grep -A 200 11a7。</li>
 </ul>
 <p>另外，线上问题排查还可以使用Alibaba开源的工具Arthas进行排查，以上问题，可以使用一下命令定位：<br>thread -n 3 &#x2F;&#x2F;查看cpu占比前三的线程</p>
-<h2 id="频繁gc？"><a href="#频繁gc？" class="headerlink" title="频繁gc？"></a>频繁gc？</h2><p>也可以使用jstat来分析问题可以先确定下gc是不是太频繁，使用jstat -gc pid 1000命令来对gc分代变化情况进行观察，<br>1000表示采样间隔(ms)，S0C&#x2F;S1C、S0U&#x2F;S1U、EC&#x2F;EU、OC&#x2F;OU、MC&#x2F;MU分别代表两个Survivor区、Eden区、老年代、元数据区的容量和使用量。YGC&#x2F;YGT、FGC&#x2F;FGCT、GCT则代表YoungGc、FullGc的耗时和次数以及总耗时。如果看到gc比较频繁，再针对gc方面做进一步分析。</p>
-
+<h2 id="频繁gc？"><a href="#频繁gc？" class="headerlink" title="频繁gc？"></a>频繁gc？</h2><p>也可以使用jstat来分析问题可以先确定下gc是不是太频繁，使用jstat -gc pid 1000命令来对gc分代变化情况进行观察，<br>1000表示采样间隔(ms)，S0C&#x2F;S1C、S0U&#x2F;S1U、EC&#x2F;EU、OC&#x2F;OU、MC&#x2F;MU分别代表两个Survivor区、Eden区、老年代、元数据区的容量和使用量。<br>YGC&#x2F;YGT、FGC&#x2F;FGCT、GCT则代表YoungGc、FullGc的耗时和次数以及总耗时。如果看到gc比较频繁，再针对gc方面做进一步分析。</p>
+<p><img src="/%E7%BA%BF%E4%B8%8A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/jstat.png" alt="jstat.png"></p>
 <h2 id="线上Out-of-Memory-Error如何定位问题？"><a href="#线上Out-of-Memory-Error如何定位问题？" class="headerlink" title="线上Out of Memory Error如何定位问题？"></a>线上Out of Memory Error如何定位问题？</h2><p>使用工具查看内存使用情况，如 top、htop、vmstat、free 等。这些工具可以帮助您查看内存使用情况，并确定高内存使用的进程。<br>free -h</p>
 <h2 id="查看内存占用最高的进程"><a href="#查看内存占用最高的进程" class="headerlink" title="查看内存占用最高的进程"></a>查看内存占用最高的进程</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux --sort -rss</span><br></pre></td></tr></table></figure>
 
