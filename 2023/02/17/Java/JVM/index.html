@@ -236,7 +236,6 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-histo：按对象类型统计 Java 堆中的对象数量、大小等信息。</span><br><span class="line">-F：在无法正常生成内存映像文件时，强制 jmap 工具生成内存映像文件，但可能会导致生成的内存映像文件不完整或损坏。</span><br><span class="line">-hprof：将生成的内存映像文件保存为 HPROF 格式，便于使用其他工具进行分析和调试。</span><br><span class="line">-J：将选项传递给 JVM，例如设置堆大小、设置 JVM 参数等。</span><br></pre></td></tr></table></figure>
 
 <p>需要注意的是，jmap 工具只能用于分析 Java 应用程序的内存使用情况，无法用于分析 CPU 占用率、线程状态等信息。如果需要分析这些信息，可以使用其他工具，例如 jstat、jstack 等。jmap 工具在生成内存映像文件或打印内存使用情况时，会暂停 Java 应用程序的执行，可能会导致应用程序的性能下降或出现短暂的停顿。因此，在生产环境中需要谨慎使用，建议在非生产环境中进行测试和分析。</p>
-<p> test</p>
  
       <!-- reward -->
       
