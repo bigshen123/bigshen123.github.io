@@ -71,18 +71,134 @@
   </entry>
   <entry>
     <title>JVM参数、命令</title>
-    <url>/2023/02/01/Java/JVM/</url>
-    <content><![CDATA[<h2 id="JVM参数"><a href="#JVM参数" class="headerlink" title="JVM参数"></a>JVM参数</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-Xmixed        混合模式执行 (默认)</span><br><span class="line">-Xint             仅解释模式执行</span><br><span class="line">-Xcomp        仅采用即时编译器模式</span><br><span class="line">-Xbootclasspath:&lt;用 ; 分隔的目录和 zip/jar 文件&gt;  设置搜索路径以引导类和资源</span><br><span class="line">-Xbootclasspath/a:&lt;用 ; 分隔的目录和 zip/jar 文件&gt; 附加在引导类路径末尾</span><br><span class="line">-Xbootclasspath/p:&lt;用 ; 分隔的目录和 zip/jar 文件&gt; 置于引导类路径之前</span><br><span class="line">-Xdiag            显示附加诊断消息</span><br><span class="line">-Xnoclassgc       禁用类垃圾收集</span><br><span class="line">-Xincgc           启用增量垃圾收集</span><br><span class="line">-Xloggc:&lt;file&gt;    将 GC 状态记录在文件中 (带时间戳)</span><br><span class="line">-Xbatch           禁用后台编译</span><br><span class="line">-Xms&lt;size&gt;        设置初始 Java 堆大小</span><br><span class="line">-Xmx&lt;size&gt;        设置最大 Java 堆大小</span><br><span class="line">-Xss&lt;size&gt;        设置 Java 线程堆栈大小</span><br><span class="line">-Xprof            输出 cpu 配置文件数据</span><br><span class="line">-Xfuture          启用最严格的检查, 预期将来的默认值</span><br><span class="line">-Xrs              减少 Java/VM 对操作系统信号的使用 (请参阅文档)</span><br><span class="line">-Xcheck:jni       对 JNI 函数执行其他检查</span><br><span class="line">-Xshare:off       不尝试使用共享类数据</span><br><span class="line">-Xshare:auto      在可能的情况下使用共享类数据 (默认)</span><br><span class="line">-Xshare:on        要求使用共享类数据, 否则将失败。</span><br><span class="line">-XshowSettings    显示所有设置并继续</span><br><span class="line">-XshowSettings:all 显示所有设置并继续</span><br><span class="line">-XshowSettings:vm 显示所有与 vm 相关的设置并继续</span><br><span class="line">-XshowSettings:properties 显示所有属性设置并继续</span><br><span class="line">-XshowSettings:locale 显示所有与区域设置相关的设置并继续</span><br><span class="line">-X 选项是非标准选项，如有更改，恕不另行通知</span><br></pre></td></tr></table></figure>
+    <url>/2023/02/17/Java/JVM/</url>
+    <content><![CDATA[<h2 id="JVM常用调优参数"><a href="#JVM常用调优参数" class="headerlink" title="JVM常用调优参数"></a>JVM常用调优参数</h2><ul>
+<li><p>堆大小相关参数：</p>
+<blockquote>
+<p>-Xmx: 最大堆大小，一般设置为机器内存的 70% 到 80%<br>-Xms: 初始堆大小，一般设置为与最大堆大小相同，可以避免在应用启动后频繁扩展堆大小导致的性能问题<br>-Xmn: 年轻代大小，根据应用的内存需求进行调整<br>-XX:MaxPermSize：设置永久代（Permanent Generation）大小，一般设置为 256MB 到 512MB</p>
+</blockquote>
+</li>
+<li><p>垃圾回收相关参数：</p>
+<blockquote>
+<p>-XX:+UseG1GC：使用 G1 垃圾回收器，可以提高应用的垃圾回收性能和响应时间<br>-XX:+UseParallelGC：使用并行垃圾回收器，可以提高多核处理器上的垃圾回收性能<br>-XX:+UseConcMarkSweepGC：使用 CMS 垃圾回收器，可以在减少应用停顿时间的同时保证垃圾回收性能<br>-XX:MaxGCPauseMillis：设置垃圾回收的最大停顿时间，可以根据应用需求进行调整</p>
+</blockquote>
+</li>
+<li><p>线程池相关参数：</p>
+<blockquote>
+<p>-XX:ParallelGCThreads：设置并行垃圾回收器的线程数，可以根据机器的 CPU 核数进行调整<br>-XX:ConcGCThreads：设置 CMS 垃圾回收器的并发线程数，可以根据机器的 CPU 核数进行调整<br>-XX:ThreadStackSize：设置线程栈大小，可以根据应用的线程需求进行调整</p>
+</blockquote>
+</li>
+<li><p>类加载相关参数：</p>
+<blockquote>
+<p>-XX:+TraceClassLoading：打印类加载信息<br>-XX:+TraceClassUnloading：打印类卸载信息<br>-XX:MaxMetaspaceSize：设置元数据空间大小，一般设置为机器内存的 25% 到 30%</p>
+</blockquote>
+</li>
+<li><p>JIT 相关参数：</p>
+<blockquote>
+<p>-XX:+PrintCompilation：打印方法的即时编译信息，可以用于分析代码的热点和性能问题<br>-XX:+PrintInlining：打印内联信息，可以用于分析内联的效果和影响<br>-XX:CompileThreshold：设置方法被调用多少次后才进行即时编译，可以根据应用的特性进行调整</p>
+</blockquote>
+</li>
+<li><p>GC 日志相关参数：</p>
+<blockquote>
+<p>-verbose:gc：打印 GC 日志，包括 GC 时间、堆大小、堆使用情况等信息<br>-XX:+PrintGC：打印 GC 日志，包括 GC 时间、GC 类型、堆大小、堆使用情况等信息<br>-XX:+PrintGCDetails：打印 GC 详细信息，包括每个区域的大小、使用情况、GC 前后的情况等信息<br>-XX:+PrintGCDateStamps：打印 GC 时间戳<br>-XX:+PrintHeapAtGC：打印 GC 时堆的详细信息，包括每个区域的大小、使用情况、GC 前后的情况等信息</p>
+</blockquote>
+</li>
+<li><p>其他常用参数：</p>
+<blockquote>
+<p>-XX:+DisableExplicitGC：禁用显式 GC，防止代码中出现显式调用 System.gc() 导致的性能问题<br>-XX:+UseCompressedOops：启用压缩指针，可以减少对象引用的内存占用<br>-XX:+UseBiasedLocking：启用偏向锁，可以减少无竞争情况下的锁操作开销<br>-XX:+UseLargePages：启用大页内存，可以提高内存访问性能</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="jps-查看正在运行的Java进程"><a href="#jps-查看正在运行的Java进程" class="headerlink" title="jps 查看正在运行的Java进程"></a>jps 查看正在运行的Java进程</h2><p>jps 是 JDK 自带的一个工具，用于查看正在运行的 Java 进程信息。它可以显示 Java 进程的进程 ID（PID）和主类名等信息。</p>
+<p>除了显示 PID 和主类名，jps 还可以显示以下信息：</p>
+<p>-l：显示主类的全名，而不仅仅是类名<br>-m：显示传递给主类 main() 方法的参数<br>-v：显示传递给 JVM 的参数<br>例如，要显示主类的全名和传递给主类 main() 方法的参数，可以使用命令：jps -lvm</p>
+<p>使用 jps 工具可以方便地查看系统中正在运行的 Java 进程信息，特别是在需要管理多个 Java 进程的情况下，它可以帮助用户快速定位需要的 Java 进程。</p>
+<h2 id="jstat-查看JVM统计信息"><a href="#jstat-查看JVM统计信息" class="headerlink" title="jstat 查看JVM统计信息"></a>jstat 查看JVM统计信息</h2><p>jstat 是 JDK 自带的一个工具，用于查看 JVM 内部的统计信息，例如垃圾回收（GC）情况、类加载情况、线程情况等。</p>
+<p>命令使用：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jstat -&lt;option&gt; [-t] [-h&lt;lines&gt;] &lt;vmid&gt; [&lt;interval&gt; [&lt;count&gt;]]</span><br><span class="line"></span><br><span class="line">option 表示需要查看的统计信息类型，</span><br><span class="line">vmid 表示 JVM 的进程 ID，</span><br><span class="line">interval 表示输出数据的时间间隔（单位为毫秒），</span><br><span class="line">count 表示输出数据的次数。</span><br><span class="line"></span><br><span class="line">jstat 常用统计信息选项：</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> gc：垃圾回收情况</span><br><span class="line"></span><br><span class="line">S0C：Survivor0 区域的大小</span><br><span class="line">S1C：Survivor1 区域的大小</span><br><span class="line">S0U：Survivor0 区域已使用的大小</span><br><span class="line">S1U：Survivor1 区域已使用的大小</span><br><span class="line">EC：Eden 区域的大小</span><br><span class="line">EU：Eden 区域已使用的大小</span><br><span class="line">OC：老年代的大小</span><br><span class="line">OU：老年代已使用的大小</span><br><span class="line">PC：永久代的大小</span><br><span class="line">PU：永久代已使用的大小</span><br><span class="line">YGC：年轻代垃圾回收次数</span><br><span class="line">YGCT：年轻代垃圾回收消耗时间</span><br><span class="line">FGC：Full GC 次数</span><br><span class="line">FGCT：Full GC 消耗时间</span><br><span class="line">GCT：所有 GC 消耗时间</span><br><span class="line">-------------------------------------------------------</span><br><span class="line"></span><br><span class="line">class：类加载情况</span><br><span class="line"></span><br><span class="line">Loaded：当前加载的类的数量</span><br><span class="line">Bytes：当前加载的类所占用的字节数</span><br><span class="line">Unloaded：已卸载的类的数量</span><br><span class="line">Bytes：已卸载的类所占用的字节数</span><br><span class="line">compiler：JIT 编译器情况</span><br><span class="line"></span><br><span class="line">Compiled：已编译的方法数量</span><br><span class="line">Failed：编译失败的方法数量</span><br><span class="line">Invalid：无效的方法数量</span><br><span class="line">Time：编译所消耗的时间</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------</span><br><span class="line"></span><br><span class="line">thread：线程情况</span><br><span class="line"></span><br><span class="line">N：当前活动线程的数量</span><br><span class="line">S：Java 线程状态的统计信息（包括 NEW、RUNNABLE、BLOCKED、WAITING、TIMED_WAITING、TERMINATED 等状态）</span><br><span class="line">Blocked：被阻塞的 Java 线程的数量</span><br><span class="line">Wait：正在等待某个 Java 对象的 Java 线程的数量</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">例如，要查看某个 Java 进程的 GC 情况，可以使用以下命令：</span><br><span class="line">jstat -gc &lt;vmid&gt;</span><br><span class="line"></span><br><span class="line">要定时输出 GC 情况，可以使用以下命令：</span><br><span class="line">jstat -gc &lt;vmid&gt; &lt;interval&gt; &lt;count&gt;</span><br><span class="line"></span><br><span class="line">-------------------------------------------------------</span><br><span class="line"></span><br><span class="line">jstat 还支持许多其他的选项：</span><br><span class="line">gccapacity：GC 容量</span><br><span class="line">gccause：GC 原因</span><br><span class="line">gcnew：年轻代 GC 情况</span><br><span class="line">gcnewcapacity：年轻代 GC 容量</span><br><span class="line">gcold：老年代 GC 情况</span><br><span class="line">gcoldcapacity：老年代 GC 容量</span><br><span class="line">gcmetacapacity：元数据 GC 容量</span><br><span class="line">gcutil：GC 统计信息</span><br><span class="line">printcompilation：打印已编译的方法</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h2 id="jps-查看正在运行的Java进程"><a href="#jps-查看正在运行的Java进程" class="headerlink" title="jps 查看正在运行的Java进程"></a>jps 查看正在运行的Java进程</h2><h2 id="jstat-查看JVM统计信息"><a href="#jstat-查看JVM统计信息" class="headerlink" title="jstat 查看JVM统计信息"></a>jstat 查看JVM统计信息</h2><p>1、-class举例：<br>jstat -class -t -h3 13152 1000 10，<br>其中h3中的3代表每隔3个分隔一次，13152代表类的进程id，1000代表每隔1000毫秒打印一次，10代表一共打印10次，如下所示：</p>
-<p>其中Timestamp代表程序至今的运行时间，单位为秒；Loaded代表加载的类的数目；Bytes代表加载的类的总字节数；Unloaded代表卸载的类的数目；Bytes代表卸载的类的总字节数；Time代表类装载所消耗的时间；<br>2、-gc举例：jstat -gc 13152，其中13152代表类的进程id，执行结果如下所示：</p>
-<p>其中S0C代表幸存者0区的总容量，S1C代表幸存者1区的总容量，S0U代表幸存者0区使用的容量，S1U代表幸存者1区使用的容量，EC代表伊甸园区的总容量，EU代表伊甸园区使用的总容量，OC代表老年代的总容量，OU代表老年代已经使用的容量，MC代表方法区的总容量，MU代表方法区的总容量，CCSC代表压缩类的总容量，CCSU代表压缩类使用的容量，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间<br>3、-gccapacity举例：jstat -gccapacity 13152，其中13152代表类的进程id，执行结果如下：</p>
-<p>其中S0C代表幸存者0区的容量，S1C代表幸存者1区的容量，EC代表伊甸园区的容量，CCSC代表压缩类的容量，YGC代表年轻代垃圾回收的时间，FGC代表Full GC垃圾回收的时间<br>4、-gcutil举例：jstat -gcutil 13152，其中13152代表类的进程id，执行结果如下所示：</p>
-<p>以上是各区域占比以及垃圾回收的情况，S0代表幸存者0区，S1代表幸存者1区，E代表伊甸园区，O代表老年代，M代表方法区，CCS代表压缩类，以上这些值都是占比情况，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间<br>5、-gccause举例：jstat -gccause 13152，其中13152代表类的进程id，执行结果如下：</p>
+<ul>
+<li>使用 jstat 工具需要注意以下几点：<blockquote>
+<p>jstat 工具只能监视已启动的 JVM 进程，无法监视尚未启动的进程。<br>如果要使用 jstat 工具查看某个进程的统计信息，需要知道该进程的 PID。<br>在使用 jstat 工具时，建议使用比较小的 interval 和 count 参数，以免过多地干扰 JVM 的正常运行。</p>
+</blockquote>
+</li>
+</ul>
+<p>1、-class举例：<br>jstat -class -t -h3 13152 1000 10，<br>其中h3中的3代表每隔3个分隔一次，13152代表类的进程id，1000代表每隔1000毫秒打印一次，10代表一共打印10次，如下所示：</p>
+<p>其中Timestamp代表程序至今的运行时间，单位为秒；Loaded代表加载的类的数目；Bytes代表加载的类的总字节数；Unloaded代表卸载的类的数目；Bytes代表卸载的类的总字节数；Time代表类装载所消耗的时间；</p>
+<p>2、-gc举例：jstat -gc 13152，其中13152代表类的进程id，执行结果如下所示：<br>其中S0C代表幸存者0区的总容量，S1C代表幸存者1区的总容量，S0U代表幸存者0区使用的容量，S1U代表幸存者1区使用的容量，EC代表伊甸园区的总容量，EU代表伊甸园区使用的总容量，OC代表老年代的总容量，OU代表老年代已经使用的容量，MC代表方法区的总容量，MU代表方法区的总容量，CCSC代表压缩类的总容量，CCSU代表压缩类使用的容量，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间</p>
+<p>3、-gccapacity举例：jstat -gccapacity 13152，其中13152代表类的进程id，执行结果如下：</p>
+<p>其中S0C代表幸存者0区的容量，S1C代表幸存者1区的容量，EC代表伊甸园区的容量，CCSC代表压缩类的容量，YGC代表年轻代垃圾回收的时间，FGC代表Full GC垃圾回收的时间</p>
+<p>4、-gcutil举例：jstat -gcutil 13152，其中13152代表类的进程id，执行结果如下所示：</p>
+<p>以上是各区域占比以及垃圾回收的情况，S0代表幸存者0区，S1代表幸存者1区，E代表伊甸园区，O代表老年代，M代表方法区，CCS代表压缩类，以上这些值都是占比情况，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间</p>
+<p>5、-gccause举例：jstat -gccause 13152，其中13152代表类的进程id，执行结果如下：</p>
 <p>以上是各区域占比以及垃圾回收的情况，还有触发垃圾回收的原因解释，S0代表幸存者0区，S1代表幸存者1区，E代表伊甸园区，O代表老年代，M代表方法区，CCS代表压缩类，以上这些值都是占比情况，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间，LGCC和GCC代表垃圾回收的原因</p>
-<h2 id="jinfo-实时查看和修改JVM配置参数"><a href="#jinfo-实时查看和修改JVM配置参数" class="headerlink" title="jinfo 实时查看和修改JVM配置参数"></a>jinfo 实时查看和修改JVM配置参数</h2><img src="/2023/02/01/Java/JVM/img.png" class="" title="加载失败">
+<h2 id="jinfo-实时查看和修改JVM配置参数"><a href="#jinfo-实时查看和修改JVM配置参数" class="headerlink" title="jinfo 实时查看和修改JVM配置参数"></a>jinfo 实时查看和修改JVM配置参数</h2><img src="/2023/02/17/Java/JVM/img.png" class="" title="加载失败">
 
-<h2 id="jstatd-远程主机信息收集"><a href="#jstatd-远程主机信息收集" class="headerlink" title="jstatd 远程主机信息收集"></a>jstatd 远程主机信息收集</h2><h2 id="jcmd-多功能命令行"><a href="#jcmd-多功能命令行" class="headerlink" title="jcmd 多功能命令行"></a>jcmd 多功能命令行</h2><h2 id="jstack-打印JVM中线程快照"><a href="#jstack-打印JVM中线程快照" class="headerlink" title="jstack 打印JVM中线程快照"></a>jstack 打印JVM中线程快照</h2><h2 id="jhat-JDK自带堆分析工具"><a href="#jhat-JDK自带堆分析工具" class="headerlink" title="jhat JDK自带堆分析工具"></a>jhat JDK自带堆分析工具</h2><h2 id="jmap-导出内存映像文件-amp-内存使用情况"><a href="#jmap-导出内存映像文件-amp-内存使用情况" class="headerlink" title="jmap 导出内存映像文件&amp;内存使用情况"></a>jmap 导出内存映像文件&amp;内存使用情况</h2>]]></content>
+<p>jinfo 是一个非常有用的 JVM 监控工具，它可以用来实时查看和修改正在运行的 JVM 进程的配置参数。使用 jinfo 工具可以轻松地获取 JVM 进程的详细信息，包括启动参数、系统属性、线程堆栈等，还可以修改某些配置参数，例如堆大小、GC 策略等。</p>
+<p>下面是一些常用的 jinfo 命令选项：</p>
+<p>-flag name：查看指定名称的 JVM 配置参数<br>-flags：查看所有 JVM 配置参数<br>-sysprops：查看所有系统属性<br>-h：查看帮助信息</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">例如，要查看正在运行的进程</span> <span class="string">ID</span> <span class="string">为</span> <span class="number">1234</span> <span class="string">的</span> <span class="string">JVM</span> <span class="string">进程的堆大小，可以使用以下命令：</span></span><br><span class="line"><span class="string">jinfo</span> <span class="string">-flag</span> <span class="string">HeapSize</span> <span class="number">1234</span></span><br><span class="line"></span><br><span class="line"><span class="string">如果需要修改堆大小，可以使用以下命令：</span></span><br><span class="line"><span class="string">jinfo</span> <span class="string">-flag</span> <span class="string">HeapSize=2g</span> <span class="number">1234</span></span><br><span class="line"></span><br><span class="line"><span class="string">此命令将堆大小修改为</span> <span class="string">2GB。需要注意的是，不是所有的</span> <span class="string">JVM</span> <span class="string">配置参数都可以通过</span> <span class="string">jinfo</span> <span class="string">命令来修改，例如部分参数只能在</span> <span class="string">JVM</span> <span class="string">启动时设置。因此，在使用</span> <span class="string">jinfo</span> <span class="string">工具时，需要仔细阅读相关文档，了解各个参数的使用方法和限制。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="jstatd-远程主机信息收集"><a href="#jstatd-远程主机信息收集" class="headerlink" title="jstatd 远程主机信息收集"></a>jstatd 远程主机信息收集</h2><p>jstatd 是 JDK 自带的一个远程监控工具，可以用来远程收集其他主机上的 JVM 统计信息。使用 jstatd 工具可以方便地在多台主机上监控 JVM 进程的状态，快速定位和解决性能问题。</p>
+<p>要使用 jstatd 工具，需要在远程主机上启动 jstatd 进程，并将其注册到 RMI 注册表中。具体步骤如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、在远程主机上启动 jstatd 进程：</span><br><span class="line"></span><br><span class="line">jstatd -J-Djava.security.policy=&lt;(<span class="built_in">echo</span> <span class="string">&#x27;grant codebase &quot;file:$&#123;java.home&#125;/../lib/tools.jar&quot; &#123; permission java.security.AllPermission; &#125;;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">2、在本地主机上使用 jstat 命令连接远程 jstatd 进程：</span><br><span class="line">jstat -t hostname:port</span><br><span class="line"></span><br><span class="line">其中，hostname 是远程主机的名称或 IP 地址，port 是 jstatd 进程监听的端口号。</span><br><span class="line"></span><br><span class="line">使用 jstatd 工具需要注意以下几点：</span><br><span class="line"></span><br><span class="line">jstatd 工具默认使用不安全的 RMI 协议，存在一定的安全风险，因此建议在内部网络环境中使用。</span><br><span class="line">jstatd 工具可能会对 JVM 的性能产生一定的影响，因此建议在生产环境中谨慎使用。</span><br><span class="line">jstatd 工具只能监控已经启动的 JVM 进程，无法监控尚未启动的进程。</span><br></pre></td></tr></table></figure>
+
+<h2 id="jcmd-多功能命令行"><a href="#jcmd-多功能命令行" class="headerlink" title="jcmd 多功能命令行"></a>jcmd 多功能命令行</h2><p>jcmd 是 JDK 自带的一个多功能命令行工具，可以用来查看和控制正在运行的 JVM 进程。jcmd 工具提供了一系列命令，可以用来查看 JVM 进程的运行状态、线程堆栈、GC 状态、堆转储等信息，还可以进行一些诊断和调试操作，例如强制执行 Full GC、打印线程堆栈、生成 HeapDump 等。</p>
+<p>下面是一些常用的 jcmd 命令选项：</p>
+<p>jcmd <pid> help：查看支持的命令列表<br>jcmd <pid> VM.flags：查看 JVM 启动参数<br>jcmd <pid> VM.system_properties：查看系统属性<br>jcmd <pid> Thread.print：打印线程堆栈<br>jcmd <pid> GC.run：强制执行 Full GC<br>jcmd <pid> VM.heap_dump filename：生成 HeapDump 文件</p>
+<p>例如，要查看正在运行的进程 ID 为 1234 的 JVM 进程的线程堆栈，可以使用以下命令：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">jcmd <span class="number">1234</span> Thread.<span class="built_in">print</span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要强制执行 Full GC，可以使用以下命令：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">jcmd</span> <span class="number">1234 </span><span class="string">GC.run</span></span><br></pre></td></tr></table></figure>
+
+<p>此命令将触发 JVM 执行 Full GC。</p>
+<p>需要注意的是，jcmd 命令只能用于正在运行的 JVM 进程，无法对已经停止的进程进行诊断和调试。此外，jcmd 命令可能会对 JVM 的性能产生一定的影响，因此建议在生产环境中谨慎使用。</p>
+<h2 id="jstack-打印JVM中线程快照"><a href="#jstack-打印JVM中线程快照" class="headerlink" title="jstack 打印JVM中线程快照"></a>jstack 打印JVM中线程快照</h2><p>jstack 是 JDK 自带的一个命令行工具，用于生成当前 JVM 进程中所有线程的堆栈跟踪信息，可以用来排查线程相关的性能问题。</p>
+<p>要使用 jstack 工具，需要先找到正在运行的 JVM 进程 ID。可以使用 jps 命令查看正在运行的 Java 进程，然后使用 jstack 命令打印堆栈跟踪信息。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jstack &lt;pid&gt;</span><br><span class="line">其中，pid 是正在运行的 Java 进程 ID。</span><br></pre></td></tr></table></figure>
+
+<p>jstack 命令执行后，将在控制台上输出所有线程的堆栈跟踪信息。</p>
+<p>对于每个线程，jstack 将显示该线程的状态、线程 ID、所属进程 ID、当前调用栈的方法列表等信息。</p>
+<p>jstack 工具可以用来查看线程死锁、线程等待、线程阻塞等问题，快速定位和解决性能问题。使用 jstack 工具需要注意以下几点：</p>
+<ul>
+<li>jstack 工具只能查看当前 JVM 进程中的线程堆栈信息，无法查看已经停止的进程或其他 JVM 进程的信息。</li>
+<li>jstack 工具在生成线程堆栈信息时，可能会对 JVM 的性能产生一定的影响，因此建议在生产环境中谨慎使用。</li>
+<li>jstack 工具只提供了线程堆栈信息，对于其他的 JVM 统计信息，例如内存使用情况、GC 统计信息等，需要使用其他工具，例如 jstat、jconsole 等。</li>
+</ul>
+<h2 id="jhat-JDK自带堆分析工具"><a href="#jhat-JDK自带堆分析工具" class="headerlink" title="jhat JDK自带堆分析工具"></a>jhat JDK自带堆分析工具</h2><p>jhat 是 JDK 自带的一个堆分析工具，可以帮助开发人员快速诊断 Java 程序中的内存问题。它通过将堆转换为一个 HTTP 服务器，提供了一个基于 Web 的用户界面，以便开发人员能够查看 Java 堆中的对象、引用和其他相关信息。</p>
+<p>使用 jhat 工具需要先生成 Java 堆转储文件（heap dump），可以使用 jmap 命令生成 Java 堆转储文件。生成堆转储文件后，可以使用 jhat 命令启动 jhat 服务器，将堆转储文件加载到服务器中，然后通过浏览器访问 jhat 服务器，查看 Java 堆中的对象、引用和其他相关信息。</p>
+<p>以下是 jhat 命令的使用示例：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">jhat &lt;heap_dump_file&gt;</span><br><span class="line">其中，heap_dump_file 是 Java 堆转储文件的路径。</span><br></pre></td></tr></table></figure>
+
+<p>jhat 命令执行后，会启动一个 HTTP 服务器，并将 Java 堆转储文件加载到服务器中。<br>可以通过浏览器访问 jhat 服务器，默认端口为 7000，查看 Java 堆中的对象、引用和其他相关信息。<br>jhat 工具的优点在于它提供了一个基于 Web 的用户界面，可以帮助开发人员快速定位 Java 程序中的内存问题。</p>
+<p>使用 jhat 工具需要注意以下几点：</p>
+<ul>
+<li>jhat 工具需要加载整个 Java 堆转储文件到内存中，如果文件很大，可能会占用大量的内存，因此在处理大型堆转储文件时，需要考虑服务器的内存大小和性能。</li>
+<li>jhat 工具只提供了一个静态的快照，无法监控 Java 堆的动态变化，对于监控实时性要求比较高的场景，建议使用其他工具，例如 jstat、jconsole 等。</li>
+<li>jhat 工具的用户界面相对简单，对于一些高级的内存问题，可能需要配合使用其他工具，例如 Eclipse Memory Analyzer（MAT）等。</li>
+</ul>
+<h2 id="jmap-导出内存映像文件-amp-内存使用情况"><a href="#jmap-导出内存映像文件-amp-内存使用情况" class="headerlink" title="jmap 导出内存映像文件&amp;内存使用情况"></a>jmap 导出内存映像文件&amp;内存使用情况</h2><p>jmap 是 JDK 自带的一个命令行工具，可以用于生成 Java 应用程序的内存映像文件（heap dump）和打印 Java 应用程序的内存使用情况。通过分析 Java 应用程序的内存使用情况，可以发现应用程序中的内存泄漏和内存溢出等问题，进而优化应用程序的性能和稳定性。</p>
+<p>下面介绍 jmap 工具的两个常用功能：</p>
+<p>1、生成内存映像文件<br>使用 jmap 工具生成 Java 应用程序的内存映像文件，可以用于分析应用程序的内存使用情况，包括对象的数量、类型、大小等信息，以及各种对象之间的引用关系。可以使用 jmap 工具生成两种类型的内存映像文件：</p>
+<ul>
+<li>文本格式：可以用文本编辑器打开，便于查看和分析，但文件大小较大。</li>
+<li>二进制格式：不能直接打开，但文件大小较小，适合在生产环境中使用。</li>
+</ul>
+<p>以下是生成内存映像文件的 jmap 命令示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">jmap -dump:file=heapdump.<span class="built_in">bin</span> &lt;pid&gt;</span><br></pre></td></tr></table></figure>
+
+<p>其中，file 指定生成的内存映像文件名，pid 指定 Java 应用程序的进程 ID。</p>
+<p>2、打印内存使用情况<br>使用 jmap 工具打印 Java 应用程序的内存使用情况，可以了解应用程序中各个对象的数量、大小、类型、占用空间等信息，可以帮助开发人员定位内存泄漏、内存溢出等问题。</p>
+<p>以下是打印内存使用情况的 jmap 命令示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">jmap -heap &lt;pid&gt;</span><br><span class="line">其中，pid 指定 Java 应用程序的进程 ID。</span><br></pre></td></tr></table></figure>
+
+<p>jmap 工具还可以使用一些选项，例如：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-histo：按对象类型统计 Java 堆中的对象数量、大小等信息。</span><br><span class="line">-F：在无法正常生成内存映像文件时，强制 jmap 工具生成内存映像文件，但可能会导致生成的内存映像文件不完整或损坏。</span><br><span class="line">-hprof：将生成的内存映像文件保存为 HPROF 格式，便于使用其他工具进行分析和调试。</span><br><span class="line">-J：将选项传递给 JVM，例如设置堆大小、设置 JVM 参数等。</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，jmap 工具只能用于分析 Java 应用程序的内存使用情况，无法用于分析 CPU 占用率、线程状态等信息。如果需要分析这些信息，可以使用其他工具，例如 jstat、jstack 等。jmap 工具在生成内存映像文件或打印内存使用情况时，会暂停 Java 应用程序的执行，可能会导致应用程序的性能下降或出现短暂的停顿。因此，在生产环境中需要谨慎使用，建议在非生产环境中进行测试和分析。</p>
+<p> test</p>
+]]></content>
       <categories>
         <category>JAVA</category>
       </categories>
