@@ -71,7 +71,7 @@
   </entry>
   <entry>
     <title>JVM参数、命令</title>
-    <url>/2023/02/17/Java/JVM/</url>
+    <url>/2023/02/22/Java/JVM/</url>
     <content><![CDATA[<h2 id="JVM常用调优参数"><a href="#JVM常用调优参数" class="headerlink" title="JVM常用调优参数"></a>JVM常用调优参数</h2><ul>
 <li><p>堆大小相关参数：</p>
 <blockquote>
@@ -132,9 +132,7 @@
 <p>以上是各区域占比以及垃圾回收的情况，S0代表幸存者0区，S1代表幸存者1区，E代表伊甸园区，O代表老年代，M代表方法区，CCS代表压缩类，以上这些值都是占比情况，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间</p>
 <p>5、-gccause举例：jstat -gccause 13152，其中13152代表类的进程id，执行结果如下：</p>
 <p>以上是各区域占比以及垃圾回收的情况，还有触发垃圾回收的原因解释，S0代表幸存者0区，S1代表幸存者1区，E代表伊甸园区，O代表老年代，M代表方法区，CCS代表压缩类，以上这些值都是占比情况，YGC代表年轻代垃圾回收的次数，YGCT年轻代进行垃圾回收需要的时间，FGC代表代表Full GC的次数，FGCT代表Full GC的时间，GCT代表垃圾回收的总时间，LGCC和GCC代表垃圾回收的原因</p>
-<h2 id="jinfo-实时查看和修改JVM配置参数"><a href="#jinfo-实时查看和修改JVM配置参数" class="headerlink" title="jinfo 实时查看和修改JVM配置参数"></a>jinfo 实时查看和修改JVM配置参数</h2><img src="/2023/02/17/Java/JVM/img.png" class="" title="加载失败">
-
-<p>jinfo 是一个非常有用的 JVM 监控工具，它可以用来实时查看和修改正在运行的 JVM 进程的配置参数。使用 jinfo 工具可以轻松地获取 JVM 进程的详细信息，包括启动参数、系统属性、线程堆栈等，还可以修改某些配置参数，例如堆大小、GC 策略等。</p>
+<h2 id="jinfo-实时查看和修改JVM配置参数"><a href="#jinfo-实时查看和修改JVM配置参数" class="headerlink" title="jinfo 实时查看和修改JVM配置参数"></a>jinfo 实时查看和修改JVM配置参数</h2><p>jinfo 是一个非常有用的 JVM 监控工具，它可以用来实时查看和修改正在运行的 JVM 进程的配置参数。使用 jinfo 工具可以轻松地获取 JVM 进程的详细信息，包括启动参数、系统属性、线程堆栈等，还可以修改某些配置参数，例如堆大小、GC 策略等。</p>
 <p>下面是一些常用的 jinfo 命令选项：</p>
 <p>-flag name：查看指定名称的 JVM 配置参数<br>-flags：查看所有 JVM 配置参数<br>-sysprops：查看所有系统属性<br>-h：查看帮助信息</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">例如，要查看正在运行的进程</span> <span class="string">ID</span> <span class="string">为</span> <span class="number">1234</span> <span class="string">的</span> <span class="string">JVM</span> <span class="string">进程的堆大小，可以使用以下命令：</span></span><br><span class="line"><span class="string">jinfo</span> <span class="string">-flag</span> <span class="string">HeapSize</span> <span class="number">1234</span></span><br><span class="line"></span><br><span class="line"><span class="string">如果需要修改堆大小，可以使用以下命令：</span></span><br><span class="line"><span class="string">jinfo</span> <span class="string">-flag</span> <span class="string">HeapSize=2g</span> <span class="number">1234</span></span><br><span class="line"></span><br><span class="line"><span class="string">此命令将堆大小修改为</span> <span class="string">2GB。需要注意的是，不是所有的</span> <span class="string">JVM</span> <span class="string">配置参数都可以通过</span> <span class="string">jinfo</span> <span class="string">命令来修改，例如部分参数只能在</span> <span class="string">JVM</span> <span class="string">启动时设置。因此，在使用</span> <span class="string">jinfo</span> <span class="string">工具时，需要仔细阅读相关文档，了解各个参数的使用方法和限制。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -265,6 +263,91 @@
       <tags>
         <tag>运维</tag>
         <tag>问题排查</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>编码规范</title>
+    <url>/2023/02/22/Learn/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/</url>
+    <content><![CDATA[<h2 id="编程规约"><a href="#编程规约" class="headerlink" title="编程规约"></a>编程规约</h2><h3 id="命名风格"><a href="#命名风格" class="headerlink" title="命名风格"></a>命名风格</h3><ul>
+<li>【强制】变量命名主流的三种：<ul>
+<li>小驼峰、大驼峰命名法（JAVA中推荐）</li>
+<li>下划线命名法</li>
+<li>匈牙利命名法（匈牙利命名法是：变量名 &#x3D; 属性 + 类型 + 对象描述）</li>
+</ul>
+</li>
+<li>【强制】抽象类命名使用 Abstract 或 Base 开头；异常类命名使用 Exception 结尾；测试类命名以它要测试的类的名称开始，以 Test 结尾。</li>
+<li>【强制】常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长。</li>
+<li>【强制】杜绝完全不规范的缩写，避免望文不知义。</li>
+<li>【强制】对于 Service 和 DAO 类，基于 SOA 的理念，暴露出来的服务一定是接口，内部的实现类用Impl 的后缀与接口区别。</li>
+<li>【推荐】如果模块、接口、类、方法使用了设计模式，在命名时需体现出具体模式。</li>
+<li>【参考】枚举类名带上 Enum 后缀，枚举成员名称需要全大写，单词间用下划线隔开。</li>
+</ul>
+<h3 id="常量定义"><a href="#常量定义" class="headerlink" title="常量定义"></a>常量定义</h3><ul>
+<li>【强制】不允许任何魔法值（即未经预先定义的常量）直接出现在代码中。</li>
+<li>【强制】在 long 或者 Long 赋值时，数值后使用大写的 L，不能是小写的 l，小写容易跟数字 1 混淆，造成误解.</li>
+<li>【推荐】不要使用一个常量类维护所有常量，要按常量功能进行归类，分开维护。<br>说明：大而全的常量类，杂乱无章，使用查找功能才能定位到修改的常量，不利于理解和维护。<br>正例：缓存相关常量放在类 CacheConsts 下；系统配置相关常量放在类 ConfigConsts 下。</li>
+</ul>
+<h3 id="OOP-规约"><a href="#OOP-规约" class="headerlink" title="OOP 规约"></a>OOP 规约</h3><ul>
+<li>【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可</li>
+<li>【强制】所有的覆写方法，必须加@Override 注解。</li>
+<li>【强制】相同参数类型，相同业务含义，才可以使用 Java 的可变参数，避免使用 Object。</li>
+<li>【强制】不能使用过时的类或方法。</li>
+<li>【强制】Object 的 equals 方法容易抛空指针异常，应使用常量或确定有值的对象来调用equals。</li>
+<li>【强制】为了防止精度损失，禁止使用构造方法 BigDecimal(double)的方式把 double 值转化为 BigDecimal 对象。</li>
+<li>【强制】定义 DO&#x2F;DTO&#x2F;VO 等 POJO 类时，不要设定任何属性默认值</li>
+<li>【强制】序列化类新增属性时，请不要修改 serialVersionUID 字段，避免反序列失败；如果完全不兼容升级，避免反序列化混乱，那么请修改 serialVersionUID 值。</li>
+<li>【强制】构造方法里面禁止加入任何业务逻辑，如果有初始化逻辑，请放在 init 方法中。</li>
+<li>【推荐】当一个类有多个构造方法，或者多个同名方法，这些方法应该按顺序放置在一起，便于阅读，此条规则优先于下一条。</li>
+<li>【推荐】 类内方法定义的顺序依次是：公有方法或保护方法 &gt; 私有方法 &gt; getter &#x2F; setter方法。</li>
+</ul>
+<h3 id="集合处理"><a href="#集合处理" class="headerlink" title="集合处理"></a>集合处理</h3><ul>
+<li>【强制】关于 hashCode 和 equals 的处理，遵循如下规则：<ul>
+<li>只要覆写 equals，就必须覆写 hashCode。因为 Set 存储的是不重复的对象，依据 hashCode 和 equals 进行判断，所以 Set 存储的对象必须覆写这两个方法。</li>
+<li>如果自定义对象作为 Map 的键，那么必须覆写 hashCode 和 equals。</li>
+<li>说明：String 已覆写 hashCode 和 equals 方法，所以我们可以愉快地使用 String 对象作为 key 来使用。</li>
+</ul>
+</li>
+<li>【强制】ArrayList 的 subList 结果不可强转成 ArrayList，否则会抛出 ClassCastException 异常，即 java.util.RandomAccessSubList cannot be cast to java.util.ArrayList。说明：subList 返回的是 ArrayList 的内部类 SubList，并不是 ArrayList 而是 ArrayList 的一个视图，对于 SubList 子列表的所有操作最终会反映到原列表上。</li>
+<li>【强制】使用 Map 的方法 keySet()&#x2F;values()&#x2F;entrySet()返回集合对象时，不可以对其进行添加元素操作，否则会抛出 UnsupportedOperationException 异常。可以使用迭代器方式遍历添加元素。</li>
+<li>【强制】在 subList 场景中，高度注意对原集合元素的增加或删除，均会导致子列表的遍历、增加、删除产生 ConcurrentModificationException 异常。</li>
+<li>【强制】使用集合转数组的方法，必须使用集合的 toArray(T[] array)，传入的是类型完全一致、长度为 0 的空数组。</li>
+<li>【强制】不要在 foreach 循环里进行元素的 remove&#x2F;add 操作。remove 元素请使用Iterator 方式，如果并发操作，需要对 Iterator 对象加锁。<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">正例：</span><br><span class="line">List&lt;String&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); </span><br><span class="line">list.add(<span class="string">&quot;1&quot;</span>); </span><br><span class="line">list.add(<span class="string">&quot;2&quot;</span>); </span><br><span class="line">Iterator&lt;String&gt; iterator = list.iterator(); </span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext()) &#123; </span><br><span class="line"><span class="type">String</span> <span class="variable">item</span> <span class="operator">=</span> iterator.next(); </span><br><span class="line"><span class="keyword">if</span> (删除元素的条件) &#123;</span><br><span class="line">    iterator.remove(); </span><br><span class="line">&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="并发处理"><a href="#并发处理" class="headerlink" title="并发处理"></a>并发处理</h3><ul>
+<li>【强制】获取单例对象需要保证线程安全，其中的方法也要保证线程安全。</li>
+<li>【强制】创建线程或线程池时请指定有意义的线程名称，方便出错时回溯。<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">正例：自定义线程工厂，并且根据外部特征进行分组，比如机房信息。</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserThreadFactory</span> <span class="keyword">implements</span> <span class="title class_">ThreadFactory</span> &#123;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> String namePrefix;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">nextId</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 定义线程组名称，在 jstack 问题排查时，非常有帮助</span></span><br><span class="line">UserThreadFactory(String whatFeaturOfGroup) &#123;</span><br><span class="line"> namePrefix = <span class="string">&quot;From UserThreadFactory&#x27;s &quot;</span> + whatFeaturOfGroup + <span class="string">&quot;-Worker-&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> Thread <span class="title function_">newThread</span><span class="params">(Runnable task)</span> &#123;</span><br><span class="line"> <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> namePrefix + nextId.getAndIncrement();</span><br><span class="line"> <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="literal">null</span>, task, name, <span class="number">0</span>, <span class="literal">false</span>);</span><br><span class="line"> System.out.println(thread.getName());</span><br><span class="line"> <span class="keyword">return</span> thread;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>【强制】线程资源必须通过线程池提供，不允许在应用中自行显式创建线程。<ul>
+<li>说明：线程池的好处是减少在创建和销毁线程上所消耗的时间以及系统资源的开销，解决资源不足的问<br>题。如果不使用线程池，有可能造成系统创建大量同类线程而导致消耗完内存或者“过度切换”的问题</li>
+</ul>
+</li>
+<li>【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险<ul>
+<li>说明：Executors 返回的线程池对象的弊端如下：<br>1） FixedThreadPool 和 SingleThreadPool：<br>允许的请求队列长度为 Integer.MAX_VALUE，可能会堆积大量的请求，从而导致 OOM。<br>2） CachedThreadPool：<br>允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。</li>
+</ul>
+</li>
+<li>【强制】SimpleDateFormat 是线程不安全的类，一般不要定义为 static 变量，如果定义为static，必须加锁，或者使用 DateUtils 工具类<ul>
+<li>说明：如果是 JDK8 的应用，可以使用 Instant 代替 Date，LocalDateTime 代替 Calendar，<br>DateTimeFormatter 代替 SimpleDateFormat，官方给出的解释：simple beautiful strong immutable<br>thread-safe。<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;DateFormat&gt; df = <span class="keyword">new</span> <span class="title class_">ThreadLocal</span>&lt;DateFormat&gt;() &#123; </span><br><span class="line"><span class="meta">@Override</span> </span><br><span class="line"><span class="keyword">protected</span> DateFormat <span class="title function_">initialValue</span><span class="params">()</span> &#123; </span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SimpleDateFormat</span>(<span class="string">&quot;yyyy-MM-dd&quot;</span>); </span><br><span class="line">&#125; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>【强制】对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造成死锁。<ul>
+<li>说明：线程一需要对表 A、B、C 依次全部加锁后才可以进行更新操作，那么线程二的加锁顺序也必须是A、B、C，否则可能出现死锁</li>
+</ul>
+</li>
+<li>【强制】在使用尝试机制来获取锁的方式中，进入业务代码块之前，必须先判断当前线程是否持有锁。锁的释放规则与锁的阻塞等待方式相同。<ul>
+<li>说明：Lock 对象的 unlock 方法在执行时，它会调用 AQS 的 tryRelease 方法（取决于具体实现类），如果当前线程不持有锁，则抛出 IllegalMonitorStateException 异常。</li>
+</ul>
+</li>
+<li>【强制】并发修改同一记录时，避免更新丢失，需要加锁。要么在应用层加锁，要么在缓存加锁，要么在数据库层使用乐观锁，使用 version 作为更新依据。<ul>
+<li>说明：如果每次访问冲突概率小于 20%，推荐使用乐观锁，否则使用悲观锁。乐观锁的重试次数不得小于3 次</li>
+</ul>
+</li>
+<li>【强制】多线程并行处理定时任务时，Timer 运行多个 TimeTask 时，只要其中之一没有捕获抛出的异常，其它任务便会自动终止运行，如果在处理定时任务时使用ScheduledExecutorService 则没有这个问题。</li>
+</ul>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><h2 id="安全规约"><a href="#安全规约" class="headerlink" title="安全规约"></a>安全规约</h2><h2 id="数据库规约"><a href="#数据库规约" class="headerlink" title="数据库规约"></a>数据库规约</h2><h2 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h2><h2 id="设计规约"><a href="#设计规约" class="headerlink" title="设计规约"></a>设计规约</h2>]]></content>
+      <categories>
+        <category>工作总结</category>
+      </categories>
+      <tags>
+        <tag>学习方法</tag>
       </tags>
   </entry>
 </search>
