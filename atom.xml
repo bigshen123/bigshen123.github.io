@@ -6,7 +6,7 @@
   <link href="https://bigshen123.github.io/atom.xml" rel="self"/>
   
   <link href="https://bigshen123.github.io/"/>
-  <updated>2023-02-22T03:09:21.544Z</updated>
+  <updated>2023-02-22T07:43:40.443Z</updated>
   <id>https://bigshen123.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>架构思想</title>
+    <link href="https://bigshen123.github.io/2023/02/22/Learn/%E6%9E%B6%E6%9E%84%E6%80%9D%E6%83%B3/"/>
+    <id>https://bigshen123.github.io/2023/02/22/Learn/%E6%9E%B6%E6%9E%84%E6%80%9D%E6%83%B3/</id>
+    <published>2023-02-22T07:15:39.011Z</published>
+    <updated>2023-02-22T07:43:40.443Z</updated>
+    
+    <content type="html"><![CDATA[<p>来自：<a href="https://github.com/aalansehaiyang/technology-talk/blob/master/system-architecture/architecture-experience.md">https://github.com/aalansehaiyang/technology-talk/blob/master/system-architecture/architecture-experience.md</a></p><h2 id="架构思想"><a href="#架构思想" class="headerlink" title="架构思想"></a>架构思想</h2><p>架构其实就是把复杂的问题抽象化、简单化，可能你会觉得“说起来容易但做起来难”，如何能快速上手。可以多观察，根据物质决定意识，借助生活真实场景（用户故事，要很多故事）来还原这一系列问题，抓住并提取核心特征。</p><p>CPU运算速度&gt;&gt;&gt;&gt;&gt;内存的读写速度&gt;&gt;&gt;&gt;磁盘读写速度</p><ul><li>满足业务发展需求是最高准则</li><li>业务建模，抽象和枚举是两种方式，需要平衡，不能走极端</li><li>模型要能更真实的反应事物的本质，不是名词概念的堆砌，不能过度设计</li><li>基础架构最关键的是分离不同业务领域、不同技术领域，让整个系统具有持续优化的能力。</li><li>分离基础服务、业务规则、业务流程，选择合适的工具外化业务规则和业务流程</li><li>分离业务组件和技术组件，高类聚，低耦合 - 业务信息的执行可以分散，但业务信息的管理要尽量集中</li><li>不要让软件的逻辑架构与最后物理部署绑死 - 选择合适的技术而不是高深的技术，随着业务的发展调整使用的技术</li><li>好的系统架构需要合适的组织架构去保障 - 团队成员思想的转变，漫长而艰难</li><li>业务架构、系统架构、数据模型</li></ul><h2 id="面对一块新业务，如何系统架构？"><a href="#面对一块新业务，如何系统架构？" class="headerlink" title="面对一块新业务，如何系统架构？"></a>面对一块新业务，如何系统架构？</h2><ul><li>业务分析：输出业务架构图，这个系统里有多少个业务模块，从前台用户到底层一共有多少层。</li><li>系统划分：根据业务架构图输出系统架构图，需要思考的是这块业务划分成多少个系统，可能一个系统能支持多个业务。基于什么原则将一个系统拆分成多个系统？又基于什么原则将两个系统合并成一个系统？</li><li>系统分层：系统是几层架构，基于什么原则将一个系统进行分层，分成多少层？</li><li>模块化：系统里有多少个模块，哪些需要模块化？基于什么原则将一类代码变成一个模块。</li></ul><h2 id="如何模块化？"><a href="#如何模块化？" class="headerlink" title="如何模块化？"></a>如何模块化？</h2><ul><li>基于水平切分。把一个系统按照业务类型进行水平切分成多个模块，比如权限管理模块，用户管理模块，各种业务模块等。</li><li>基于垂直切分。把一个系统按照系统层次进行垂直切分成多个模块，如DAO层，SERVICE层，业务逻辑层。</li><li>基于单一职责。将代码按照职责抽象出来形成一个一个的模块。将系统中同一职责的代码放在一个模块里。比如我们开发的系统要对接多个渠道的数据，每个渠道的对接方式和数据解析方式不一样，为避免不同渠道代码的相互影响，我们把各个渠道的代码放在各自的模块里。</li><li>基于易变和不易变。将不易变的代码抽象到一个模块里，比如系统的比较通用的功能。将易变的代码放在另外一个或多个模块里，比如业务逻辑。因为易变的代码经常修改，会很不稳定，分开之后易变代码在修改时候，不会将BUG传染给不变的代码。</li></ul><h2 id="提升系统的稳定性"><a href="#提升系统的稳定性" class="headerlink" title="提升系统的稳定性"></a>提升系统的稳定性</h2><ul><li>流控<br>双11期间，对于一些重要的接口（比如帐号的查询接口，店铺首页）做流量控制，超过阈值直接返回失败。 另外对于一些不重要的业务也可以考虑采用降级方案，大促—&gt;邮件系统。根据28原则，提前将大卖家约1W左右在缓存中预热，并设置起止时间，活动期间内这部分大卖家不发交易邮件提醒，以减轻SA邮件服务器的压力。</li><li>容灾<br>最大程度保证主链路的可用性，比如我负责交易的下单，而下单过程中有优惠的业务逻辑，此时需要考虑UMP系统挂掉，不会影响用户下单（后面可以通过修改价格弥补），采用的方式是，如果优惠挂掉，重新渲染页面，并增加ump屏蔽标记，下单时会自动屏蔽ump的代码逻辑。 另外还会记录ump系统不可用次数，一定时间内超过阈值，系统会自动报警。</li><li>稳定性<br>第三方系统可能会不稳定，存在接口超时或宕机，为了增加系统的健壮性，调用接口时设置超时时间以及异常捕获处理。</li><li>容量规划<br>做好容量规划、系统间强弱依赖关系梳理。 如：冷热数据不同处理，早期的订单采用oracle存储，随着订单的数量越来越多，查询缓慢，考虑数据迁移，引入历史表，将已归档的记录迁移到历史表中。当然最好的方法是分库分表。</li></ul><h2 id="分布式架构"><a href="#分布式架构" class="headerlink" title="分布式架构"></a>分布式架构</h2><ul><li>分布式系统</li><li>分布式缓存</li><li>分布式数据</li></ul><h2 id="架构主要环节"><a href="#架构主要环节" class="headerlink" title="架构主要环节"></a>架构主要环节</h2><ul><li>业务拆分：将整个网站业务拆分成不同的应用，每个应用独立部署维护，应用之间通过RPC或消息队列通信。</li><li>集群化（应用服务器；基于RPC的微服务应用等）</li><li>LVS负载均衡，负责将请求转发给不同业务集群</li><li>反向代理服务器，常用的如Nginx</li><li>应用服务器，servlet容器，如tomcat</li><li>应用和数据服务分离，分别部署在不同的服务器</li><li>后端应用合理分层，通常分为表现层或网关层、业务逻辑层、数据持久层</li><li>缓存。分为两种：本地缓存；分布式缓存</li><li>CDN化。静态内容部署到CDN，就近获取，加速网站响应。</li><li>数据库读写分离。数据库采用主从热备，应用服务器在写数据时访问主数据库，主数据库通过主从复制机制将数据更新同步到从数据库。</li><li>分库分表，引入分布式数据框架</li><li>引入NoSQL，支持海量数据存储</li><li>借助elastics search等开源搜索引擎</li><li>异步化，系统解耦。</li><li>缩短业务流程，加快网站访问速度</li><li>消除并发访问高峰</li></ul><h2 id="架构五要素"><a href="#架构五要素" class="headerlink" title="架构五要素"></a>架构五要素</h2><ul><li><p>高性能</p><ul><li>性能的测试指标主要有 <ul><li>响应时间：指应用执行一个操作需要的时间</li><li>并发数：指系统能够同时处理请求的数目</li><li>QPS：指单位时间内系统处理的请求量</li><li>系统性能计数器：描述服务器或者操作系统性能的一些数据指标</li></ul></li></ul></li><li><p>可用性(Availability) 目的是保证服务器硬件故障时服务依然可用、数据依然保存并能够被访问，主要手段数据和服务的冗余备份及失效转移</p><ul><li>高可用的应用：显著特点是应用的无状态性<ul><li>通过负载均衡进行无状态服务的失效转移</li><li>应用服务器集群的 Session 管理</li><li>高可用的服务：无状态的服务，可使用类似负载均衡的失效转移策略，此外还有如下策略</li><li>超时设置</li><li>异步调用</li><li>服务降级</li><li>限流</li></ul></li><li>高可用的数据：主要手段是数据备份和失效转移机制<ul><li>失效确认</li><li>访问转移</li><li>数据恢复</li><li>冷备：缺点是不能保证数据最终一致和数据可用性</li><li>热备：分为异步热备和同步热备</li><li>数据一致性(Consisitency)</li><li>数据可用性(Availibility)</li><li>分区耐受性(Partition Tolerance)</li><li>CAP 原理</li><li>数据备份</li></ul></li></ul></li><li><p>伸缩性(Scalability)</p><ul><li>应用服务器集群的伸缩性设计<ul><li>轮询(Round Robin, RR)</li><li>加权轮询(Weighted Round Robin, WRR)</li><li>随机(Random)</li><li>最少链接(Least Connections)</li><li>源地址散列(Source Hashing)</li><li>DNS 域名解析负载均衡</li><li>反向代理负载均衡(在 HTTP 协议层面，应用层负载均衡)</li><li>IP 负载均衡(在内核进程完成数据分发)</li><li>数据链路层负载均衡(数据链路层修改 mac 地址，三角传输模式，LVS)</li></ul></li><li>分布式缓存集群的伸缩性设计<ul><li>Memcached 客户端（包括 API，路由算法，服务器列表，通信模块）</li><li>Memcached 服务器集群</li><li>分布式缓存的一致性 Hash 算法(一致性 Hash 环，虚拟层)</li></ul></li><li>数据存储服务集群的伸缩性设计<ul><li>关系数据库集群的伸缩性设计</li><li>NoSQL 数据库的伸缩性设计</li></ul></li></ul></li><li><p>扩展性(Extensibility)：系统架构设计层面的“开闭原则”，构建可扩展的网站架构</p><ul><li>利用分布式消息队列降低耦合性<ul><li>分布式消息队列</li><li>事件驱动架构(Event Driven Architecture)</li></ul></li><li>利用分布式服务打造可复用的业务平台<ul><li>分布式服务框架设计(Thrift，Dubbo)</li></ul></li><li>可扩展的数据结构(如 HBase的 ColumnFamily 设计)</li><li>利用开放平台建设网站生态圈</li></ul></li><li><p>安全性：XSS 攻击和 SQL 注入攻击是构成网站应用攻击最主要的两种手段，此外还包括 CSRF,Session 劫持等手段。</p><ul><li>攻击与防御<ul><li><p>Error Code</p></li><li><p>表单 Token</p></li><li><p>验证码</p></li><li><p>jsonp请求的，Referer 校验</p></li><li><p>SQL 注入</p></li><li><p>html 危险字符转义</p></li><li><p>XSS 攻击：跨站点脚本攻击（Cross Site Script）</p></li><li><p>对js转义，使其失去执行功能，只作为纯字符串展示</p></li><li><p>CSRF 攻击：跨站点请求伪造（Cross Site Request Forgery）</p></li></ul></li><li>防范：httpOnly;增加token校验;通过Referer识别。<ul><li>网站安全漏洞扫描</li></ul></li></ul></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;来自：&lt;a href=&quot;https://github.com/aalansehaiyang/technology-talk/blob/master/system-architecture/architecture-experience.md&quot;&gt;https://github.</summary>
+      
+    
+    
+    
+    <category term="工作总结" scheme="https://bigshen123.github.io/categories/%E5%B7%A5%E4%BD%9C%E6%80%BB%E7%BB%93/"/>
+    
+    
+    <category term="学习方法" scheme="https://bigshen123.github.io/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>编码规范</title>
